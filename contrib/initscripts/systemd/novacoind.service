@@ -1,0 +1,11 @@
+[Unit]
+Description=StarCash daemon serivce
+After=network.target
+
+[Service]
+Type=simple
+User=StarCash
+ExecStart=/opt/StarCash/StarCashd
+
+[Install]
+WantedBy=multi-user.target

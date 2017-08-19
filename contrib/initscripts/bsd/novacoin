@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# PROVIDE: StarCash
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+#
+# Add the following lines to /etc/rc.conf.local or /etc/rc.conf
+# to enable this service:
+#
+# StarCash_enable (bool): Set to NO by default. Set this variable to YES if you want to enable StarCash service.
+# StarCash_config (path): Set to /usr/local/etc/StarCash.conf by default.
+# StarCash_user:  The user account StarCash daemon runs as. It uses 'root' user by default.
+# StarCash_group: The group account StarCash daemon runs as. It uses 'wheel' group by default.
+# StarCash_datadir (str): Default to "/var/db/StarCash". Base data directory.
+
+. /etc/rc.subr
+
+name=StarCash
+rcvar=StarCash_enable
+
+: ${StarCash_enable:=NO}
+: ${StarCash_config=/usr/local/etc/StarCash.conf}
+: ${StarCash_datadir=/var/db/StarCash}
+: ${StarCash_user="root"}
+: ${StarCash_group="wheel"}
+
+required_files=${StarCash_config}
+command=/usr/local/bin/StarCashd
+StarCash_chdir=${StarCash_datadir}
+pidfile="${StarCash_datadir}/StarCashd.pid"
+stop_cmd=StarCash_stop
+command_args="-conf=${StarCash_config} -datadir=${StarCash_datadir} -daemon -pid=${pidfile}"
+start_precmd="${name}_prestart"
+
+StarCash_create_datadir()
+{
+	echo "Creating data directory"
+	eval mkdir -p ${StarCash_datadir}
+	[ $? -eq 0 ] && chown -R ${StarCash_user}:${StarCash_group} ${StarCash_datadir}
+}
+
+StarCash_prestart()
+{
+	if [ ! -d "${StarCash_datadir}/." ]; then
+		StarCash_create_datadir || return 1
+	fi
+}
+
+StarCash_requirepidfile()
+{
+	if [ ! "0`check_pidfile ${pidfile} ${command}`" -gt 1 ]; then
+		echo "${name} not running? (check $pidfile)."
+		exit 1
+	fi
+}
+
+StarCash_stop()
+{
+    StarCash_requirepidfile
+
+	echo "Stopping ${name}."
+	eval ${command} -conf=${StarCash_config} -datadir=${StarCash_datadir} stop
+	wait_for_pids ${rc_pid}
+}
+
+load_rc_config $name
+run_rc_command "$1"

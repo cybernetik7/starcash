@@ -1,0 +1,2 @@
+debian/bin/StarCashd usr/bin
+src/StarCashd usr/lib/StarCash

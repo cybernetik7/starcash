@@ -1,0 +1,5 @@
+StarCash-qt usr/bin
+share/pixmaps/StarCash32.xpm usr/share/pixmaps
+share/pixmaps/StarCash80.xpm usr/share/pixmaps
+debian/StarCash-qt.desktop usr/share/applications
+debian/StarCash-qt.protocol usr/share/kde4/services/

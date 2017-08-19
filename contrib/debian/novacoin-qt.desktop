@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=StarCash
+Comment=StarCash P2P Cryptocurrency
+Comment[ru]=StarCash, P2P криптовалюта
+Comment[fr]=StarCash, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=StarCash, eşten eşe kriptografik sanal para birimi
+Exec=/usr/bin/StarCash-qt
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/StarCash80.xpm
+MimeType=x-scheme-handler/StarCash;
+Categories=Office;
