@@ -1,4 +1,5 @@
 StarCash P2P Digital Cash Network
+
 Symbol: STC
 
 RPC Port: 24425
